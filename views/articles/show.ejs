@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+
+<body>
+    <div class="container">
+        <h1 class="mb-4"><%= post.title%></h1>
+        <div class="text-muted mb-2">
+            <% post.createdAt.toLocaleDateString() %>
+        </div>
+        <a href="/articles" class="btn btn-secondary">All Articles</a>
+        <a href="/articles/edit/<%= post.id%>" class="btn btn-info">Edit</a>
+
+        <div>
+            <%- post.sanitizedHTML %>
+        </div>
+    </div>
+
+</body>
+
+</html>
