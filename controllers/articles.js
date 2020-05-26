@@ -16,19 +16,21 @@ router.get('/edit/:id', ensureAuthenticated, async (req, res) => {
     //    res.send(post.userId === req.user._id.toString())
     //res.send(post)
     if (post.userId !== req.user._id.toString()) {
-        res.send('not allowed')
+        res.render('articles/notallowed')
+        //res.send('not allowed')
     } else {
         res.render('articles/edit', { post: post })
     }
 
 });
 
-router.get('/:slug', ensureAuthenticated, async (req, res) => {
+router.get('/:slug', async (req, res) => {
     //    res.send(req.params.id);
 
     const post = await Post.findOne({ slug: req.params.slug })
     if (post == null) res.redirect('/articles')
     res.render('articles/show', { post: post })
+
     //    res.send(post.userId === req.user._id.toString())
 
     // if (post.userId !== req.user._id.toString()) {
@@ -63,7 +65,8 @@ router.delete('/:id', ensureAuthenticated, async (req, res) => {
     //    res.send(post.userId === req.user._id.toString())
     //res.send(post)
     if (post.userId !== req.user._id.toString()) {
-        res.send('not allowed')
+        res.render('articles/notallowed')
+        //res.send('not allowed')
     } else {
         await Post.findByIdAndDelete(req.params.id)
         res.redirect('/articles')

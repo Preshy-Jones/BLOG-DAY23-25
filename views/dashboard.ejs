@@ -6,9 +6,27 @@
     <link rel="stylesheet" href="https://bootswatch.com/4/darkly/bootstrap.min.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>login</title>
+    <link rel="stylesheet" href="/assets/styles2.css" type="text/css">
 </head>
 
 <body>
+
+    <header>
+        <div class="container">
+            <h1 class="logo"></h1>
+
+            <nav>
+                <ul>
+                    <li><a href="/articles">Home</a></li>
+                    <li><a href="/users/login">Login</a></li>
+                    <li><a href="/users/register">SignUp</a></li>
+                    <li><a href="/dashboard">Dashboard</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+
     <h1 class="mt-4">Dashboard</h1>
     <p class="lead mb-3">Welcome <%=name %> </p>
     <a href="/users/logout" class="btn btn-secondary">Logout</a>

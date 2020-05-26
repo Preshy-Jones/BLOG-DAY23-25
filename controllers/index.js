@@ -13,7 +13,14 @@ router.get('/getposts', ensureAuthenticated, async (req, res) => {
 
 
 //welcome
-router.get('/', (req, res) => res.render('welcome'));
+router.get('/', async (req, res) => {
+    const posts = await Post.find().sort({
+        createdAt: 'desc'
+    })
+    res.render('articles/blog', { posts: posts });
+
+    //res.render('articles/blog')
+});
 //dashboard
 router.get('/dashboard', ensureAuthenticated, async (req, res) => {
     const tempPosts = await Post.find().sort({
