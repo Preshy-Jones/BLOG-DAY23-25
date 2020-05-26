@@ -5,19 +5,20 @@ const session = require('express-session')
 const app = express();
 const passport = require('passport')
 const methodOverride = require('method-override')
-//const db = require('./config').mongoURI
+const db = require('./config').mongoURI
 //const articleRouter = require('./controllers/article')
 
 //passport config
 require('./config/passport')(passport)
 const dotenv = require('dotenv');
-const port = process.env.PORT || 8009
 
 
 
 // mongoose.connect(db, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true }, () => {
 //     console.log('mongoDB connected')
 // })
+
+const port = process.env.PORT || 8009
 
 
 dotenv.config();
@@ -69,3 +70,24 @@ app.use(express.static('./public'))
 app.listen(port, () => {
     console.log(`Server running on port ${port}`)
 })
+
+// const Role = {
+//     ADMIN: 'admin',
+//     BASIC: 'basic'
+// }
+
+
+// module.exports = {
+//     ROLE: ROLE,
+//     users: [
+//         { id: 1, name: 'Kyle', role: ROLE.ADMIN },
+//         { id: 2, name: 'Sally', role: ROLE.BASIC },
+//         { id: 3, name: 'Joe', role: ROLE.BASIC }
+
+//     ],
+//     projects: [
+//         { id: 1, name: "Kyle's project", userId: 1 },
+//         { id: 2, name: "Sally's Project", userId: 2 },
+//         { id: 3, name: "Joe's project", userId: 3 }
+//     ]
+// }

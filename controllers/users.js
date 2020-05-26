@@ -2,12 +2,17 @@ const express = require('express');
 const router = express.Router();
 const passport = require('passport');
 const bcrypt = require('bcryptjs')
-
 const User = require('../models/User')
+
+
 //login page
 router.get('/login', (req, res) => res.render('login'));
 //register page
 router.get('/register', (req, res) => res.render('register'));
+
+
+
+
 
 //register handle
 router.post('/register', (req, res) => {

@@ -12,16 +12,30 @@
     <h1 class="mt-4">Dashboard</h1>
     <p class="lead mb-3">Welcome <%=name %> </p>
     <a href="/users/logout" class="btn btn-secondary">Logout</a>
+    <div class="container">
+        <h1 class="mb-4">Blog Post</h1>
+        <a href="/articles/new" class="btn btn-success">New Post </a>
+        <a href="/articles" class="btn btn-success">Home </a>
+        <% posts.forEach(post =>{%>
+        <div class="card mt-4">
+            <div class="card-body">
+                <h4 class="card-title"><%= post.title %></h4>
+                <div class="card-subtitle text-muted mb-2">
+                    <%= post.createdAt.toLocaleDateString()%>
+                </div>
+                <div class="card-text" mb-2><%= post.description%></div>
+                <a href="articles/<%= post.slug %>" class="btn btn-primary">Read More</a>
+                <a href="/articles/edit/<%= post.id%>" class="btn btn-info">Edit</a>
+                <form action="/dashboard/<%= post.id %>?_method=DELETE" method="POST" class="d-inline">
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                </form>
+            </div>
+        </div>
+        <% })%>
 
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
-        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
-        crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
-        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
-        crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
-        integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
-        crossorigin="anonymous"></script>
+    </div>
+
+
 </body>
 
 </html>

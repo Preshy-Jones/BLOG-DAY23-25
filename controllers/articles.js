@@ -11,19 +11,34 @@ router.get('/new', ensureAuthenticated, (req, res) => {
 
 });
 
-router.get('/edit/:id', async (req, res) => {
+router.get('/edit/:id', ensureAuthenticated, async (req, res) => {
     const post = await Post.findById(req.params.id)
-    res.render('articles/edit', { post: post })
+    //    res.send(post.userId === req.user._id.toString())
+    //res.send(post)
+    if (post.userId !== req.user._id.toString()) {
+        res.send('not allowed')
+    } else {
+        res.render('articles/edit', { post: post })
+    }
+
 });
 
-router.get('/:slug', async (req, res) => {
+router.get('/:slug', ensureAuthenticated, async (req, res) => {
     //    res.send(req.params.id);
+
     const post = await Post.findOne({ slug: req.params.slug })
     if (post == null) res.redirect('/articles')
     res.render('articles/show', { post: post })
+    //    res.send(post.userId === req.user._id.toString())
+
+    // if (post.userId !== req.user._id.toString()) {
+    //     res.send('not allowed')
+    // } else {
+    //     res.render('articles/show', { post: post })
+    // }
 });
 
-router.post('/', async (req, res, next) => {
+router.post('/', ensureAuthenticated, async (req, res, next) => {
     req.post = new Post()
     next()
 }, savePostAndRedirect('new'))
@@ -43,18 +58,25 @@ router.get('/', async (req, res) => {
 
 });
 
-router.put('/:id', (req, res) => {
+router.delete('/:id', ensureAuthenticated, async (req, res) => {
+    const post = await Post.findById(req.params.id)
+    //    res.send(post.userId === req.user._id.toString())
+    //res.send(post)
+    if (post.userId !== req.user._id.toString()) {
+        res.send('not allowed')
+    } else {
+        await Post.findByIdAndDelete(req.params.id)
+        res.redirect('/articles')
+    }
 
-});
 
-router.delete('/:id', async (req, res) => {
-    await Post.findByIdAndDelete(req.params.id)
-    res.redirect('/articles')
+
 });
 
 function savePostAndRedirect(path) {
     return async (req, res) => {
         let post = req.post
+        post.userId = req.user._id
         post.title = req.body.title
         post.description = req.body.description
         post.markdown = req.body.markdown
@@ -67,12 +89,14 @@ function savePostAndRedirect(path) {
     }
 }
 
-router.get('/getposts', async (req, res) => {
-    const posts = await Post.find({}, { description: 0 });
-    if (!posts) return res.status(400).send('no posts found');
-    res.status(200).json(posts);
 
-});
+function setUser(req, res, next) {
+    const userId = req.body.userId
+    if (userId) {
+        req.user = users.find(user => user.id === userId)
+    }
+    next()
+}
 
 
 module.exports = router
