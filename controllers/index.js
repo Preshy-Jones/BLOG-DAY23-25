@@ -11,6 +11,13 @@ router.get('/getposts', ensureAuthenticated, async (req, res) => {
     //    res.send(req.user);
 });
 
+router.get('/getpost/:id', async (req, res) => {
+    const post = await Post.find({ _id: req.params.id });
+    if (!post) return res.status(400).send('no posts found');
+    res.status(200).json(post);
+    //    res.send(req.user);
+});
+
 
 //welcome
 router.get('/', async (req, res) => {

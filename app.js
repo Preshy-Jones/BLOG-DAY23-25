@@ -13,19 +13,17 @@ require('./config/passport')(passport)
 const dotenv = require('dotenv');
 
 
+const port = process.env.PORT || 8009
+
 
 // mongoose.connect(db, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true }, () => {
 //     console.log('mongoDB connected')
 // })
 
-const port = process.env.PORT || 8009
-
-
 dotenv.config();
 mongoose.connect(process.env.DB_CONNECT,
-    { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true },
+    { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true, useFindAndModify: false },
     () => console.log('connected to mongodb')
-
 );
 //ejs template engine
 app.set('view engine', 'ejs');

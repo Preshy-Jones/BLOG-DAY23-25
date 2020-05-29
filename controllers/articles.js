@@ -24,10 +24,13 @@ router.get('/edit/:id', ensureAuthenticated, async (req, res) => {
 
 });
 
-router.get('/:slug', async (req, res) => {
+
+
+
+router.get('/:id', async (req, res) => {
     //    res.send(req.params.id);
 
-    const post = await Post.findOne({ slug: req.params.slug })
+    const post = await Post.findById(req.params.id)
     if (post == null) res.redirect('/articles')
     res.render('articles/show', { post: post })
 
@@ -52,6 +55,8 @@ router.put('/:id', async (req, res, next) => {
 
 
 
+
+
 router.get('/', async (req, res) => {
     const posts = await Post.find().sort({
         createdAt: 'desc'
@@ -62,8 +67,9 @@ router.get('/', async (req, res) => {
 
 router.delete('/:id', ensureAuthenticated, async (req, res) => {
     const post = await Post.findById(req.params.id)
+    // res.send(post.userId)
     //    res.send(post.userId === req.user._id.toString())
-    //res.send(post)
+    // res.send(post)
     if (post.userId !== req.user._id.toString()) {
         res.render('articles/notallowed')
         //res.send('not allowed')
@@ -71,8 +77,32 @@ router.delete('/:id', ensureAuthenticated, async (req, res) => {
         await Post.findByIdAndDelete(req.params.id)
         res.redirect('/articles')
     }
+});
 
 
+router.put('/likes/:id', ensureAuthenticated, async (req, res) => {
+    const post = await Post.findById(req.params.id)
+    if (post.likedBy.includes(req.user._id) === true) {
+        post.likes = post.likes - 1
+        post.likedBy.splice((post.likedBy.indexOf(req.user._id)), 1)
+        await Post.findByIdAndUpdate({ _id: post._id }, { likes: post.likes, likedBy: post.likedBy })
+        res.redirect('/articles')
+    } else if (post.likedBy.includes(req.user._id) === false) {
+        post.likes = post.likes + 1
+        post.likedBy.push((req.user._id))
+        //        console.log(post.likedBy);
+
+        await Post.findByIdAndUpdate({ _id: post._id }, { likes: post.likes, likedBy: post.likedBy }, function (err, result) {
+            if (err) {
+                console.log(err);
+            } else {
+                console.log(result);
+            }
+        })
+        res.redirect('/articles')
+    }
+    // if(req.user._id.toString() ===post.userId)
+    //res.send(post)
 
 });
 
@@ -85,7 +115,7 @@ function savePostAndRedirect(path) {
         post.markdown = req.body.markdown
         try {
             post = await post.save()
-            res.redirect(`/articles/${post.slug}`)
+            res.redirect(`/articles/${post.id}`)
         } catch (e) {
             res.render(`articles/${path}`, { post: post })
         }

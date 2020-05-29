@@ -41,11 +41,16 @@
                     <%= post.createdAt.toLocaleDateString()%>
                 </div>
                 <div class="card-text" mb-2><%= post.description%></div>
-                <a href="articles/<%= post.slug %>" class="btn btn-primary">Read More</a>
+                <a href="articles/<%= post.id %>" class="btn btn-primary">View Post</a>
                 <a href="/articles/edit/<%= post.id%>" class="btn btn-info">Edit</a>
+                <!-- <a href="/articles/likepost/<%= post.id%>?_method=PUT" class="btn btn-info"><%= post.description%></a> -->
                 <form action="/articles/<%= post.id %>?_method=DELETE" method="POST" class="d-inline">
                     <button type="submit" class="btn btn-danger">Delete</button>
                 </form>
+                <form action="/articles/likes/<%= post.id %>?_method=PUT" method="POST" class="d-inline">
+                    <button type="submit" class="btn btn-danger">Likes <%= post.likes%></button>
+                </form>
+
             </div>
         </div>
         <% })%>
